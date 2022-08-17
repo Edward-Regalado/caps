@@ -2,10 +2,22 @@
   "name": "caps",
   "version": "1.0.0",
   "description": "simulates a real world supply chain",
-  "main": "index.js",
+  "main": "caps.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/caps.js",
+    "dev": "nodemon ./src/caps.js",
+    "test": "jest --coverage"
   },
   "author": "Tony Regalado",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@faker-js/faker": "^7.4.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "@ngneat/falso": "^6.1.0",
+    "chance": "^1.1.8",
+    "events": "^3.3.0",
+    "faker": "^6.6.6"
+  }
 }
