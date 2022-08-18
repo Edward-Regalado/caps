@@ -2,16 +2,10 @@
 
 const events = require('./events.js');
 
-// Listening for emit events
-// Once we "hear" the keyword 'newOrder', fire off the pickUp function and start the domino event
-
-events.addListener('newOrder', pickUp);
-events.addListener('pickUp', inTransit);
-events.addListener('in-transit', delivered);
-
 function pickUp(payload) {
     setTimeout(() => {
         events.emit('pickUp', payload);
+        logEvents(payload, 'pickup');
         console.log(`DRIVER picked up: ${payload.orderId}`);
     }, 1000);
 }
@@ -19,6 +13,7 @@ function pickUp(payload) {
 function inTransit(payload) {
     setTimeout(() => {
         events.emit('in-transit', payload);
+        logEvents(payload, 'in-transit');
         console.log(`DRIVER in-transit: ${payload.orderId}`);
     }, 2000)
 }
@@ -26,12 +21,29 @@ function inTransit(payload) {
 function delivered(payload) {
     setTimeout(() => {
         events.emit('delivered', payload);
+        logEvents(payload, 'delivered');
         console.log(`DRIVER delivered: ${payload.orderId}`);
     }, 3000);
+}
+
+function logEvents(payload, str){
+    const date = Date.now();
+    const today = new Date(date).toUTCString();
+    console.log(`
+        EVENT: {\n
+            event: "${str}",\n
+            time: "${today}",\n
+            payload: {\n
+                store: "${payload.store}", \n
+                orderId: "${payload.orderId}", \n
+                customer: "${payload.customer}", \n
+                address: "${payload.address}", \n
+            },
+        }`);
 }
 
 module.exports = {
     pickUp,
     inTransit,
-    delivered 
+    delivered, 
 }

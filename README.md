@@ -23,6 +23,10 @@ This will be an event driven application that “distributes” the responsibili
 - As a developer, I want to use industry standards for managing the state of each package.
 - As a developer, I want to create an event driven system so that I can write code that happens in response to events, in real time.
 
+## Collaborators
+
+- Martha Q., Sarah T., Danny C.
+
 ## UML Diagram
 
 ![UML](./src/assets/images/caps.PNG)
