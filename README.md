@@ -8,9 +8,9 @@ This will be an event driven application that “distributes” the responsibili
 
 ## Getting Started
 
-- npm install
-- npm run dev
-- npm test
+- `npm install`
+- `npm run dev` or `npm start`
+- `npm test`
 
 ## Requirements
 
@@ -22,6 +22,17 @@ This will be an event driven application that “distributes” the responsibili
 
 - As a developer, I want to use industry standards for managing the state of each package.
 - As a developer, I want to create an event driven system so that I can write code that happens in response to events, in real time.
+
+## Tests
+
+- driver.js
+  - `pickUp()`should emit a new event and console log
+  - `inTransit()`should emit a new event and console log
+  - `delivered()`should emit a new event and console log
+
+- vendor.js
+  - `createPackage()`should emit a new event when a package is created
+  - `packageDelivered()` should console log that the package was delivered
 
 ## Collaborators
 

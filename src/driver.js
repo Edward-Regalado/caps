@@ -3,11 +3,12 @@
 const events = require('./events.js');
 
 function pickUp(payload) {
-    setTimeout(() => {
+    setTimeout(()  => {
         events.emit('pickUp', payload);
         logEvents(payload, 'pickup');
         console.log(`DRIVER picked up: ${payload.orderId}`);
     }, 1000);
+    return payload;
 }
 
 function inTransit(payload) {
@@ -16,6 +17,7 @@ function inTransit(payload) {
         logEvents(payload, 'in-transit');
         console.log(`DRIVER in-transit: ${payload.orderId}`);
     }, 2000)
+    return payload;
 }
 
 function delivered(payload) {
@@ -24,6 +26,7 @@ function delivered(payload) {
         logEvents(payload, 'delivered');
         console.log(`DRIVER delivered: ${payload.orderId}`);
     }, 3000);
+    return payload;
 }
 
 function logEvents(payload, str){
@@ -45,5 +48,6 @@ function logEvents(payload, str){
 module.exports = {
     pickUp,
     inTransit,
-    delivered, 
+    delivered,
+    logEvents, 
 }
