@@ -5,10 +5,10 @@ const Chance = require('chance');
 const chance = Chance();
 const events = require('./events.js');
 
-const { packageDelivered } = require('./vendor.js');
+const { createPackage, packageDelivered } = require('./vendor.js');
 const { pickUp, inTransit, delivered } = require('./driver.js');
 
-
+events.addListener('start', createPackage);
 events.addListener('newOrder', pickUp);
 events.addListener('pickUp', inTransit);
 events.addListener('in-transit', delivered);
