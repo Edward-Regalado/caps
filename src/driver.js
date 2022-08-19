@@ -1,10 +1,13 @@
 'use strict';
 
-const events = require('./events.js');
+// const events = require('./events.js');
+const { io } = require('socket.io-client');
+const socket = io('ws://localhost:3000');
 
 function pickUp(payload) {
     setTimeout(()  => {
-        events.emit('pickUp', payload);
+        payload.status = 'pickup';
+        socket.emit('pickUp', payload);
         logEvents(payload, 'pickup');
         console.log(`DRIVER picked up: ${payload.orderId}`);
     }, 1000);
@@ -13,7 +16,8 @@ function pickUp(payload) {
 
 function inTransit(payload) {
     setTimeout(() => {
-        events.emit('in-transit', payload);
+        payload.status = 'in-transit';
+        socket.emit('in-transit', payload);
         logEvents(payload, 'in-transit');
         console.log(`DRIVER in-transit: ${payload.orderId}`);
     }, 2000)
@@ -22,7 +26,8 @@ function inTransit(payload) {
 
 function delivered(payload) {
     setTimeout(() => {
-        events.emit('delivered', payload);
+        payload.status = 'delivered';
+        socket.emit('delivered', payload);
         logEvents(payload, 'delivered');
         console.log(`DRIVER delivered: ${payload.orderId}`);
     }, 3000);

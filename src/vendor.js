@@ -1,8 +1,18 @@
 'use strict';
 
-const events = require('./events.js');
+const { io } = require('socket.io-client');
+const socket = io('ws://localhost:3000');
+
+// const events = require('./events.js');
 const Chance = require('chance');
 const chance = Chance();
+
+function createANewStore(client){
+    setInterval(() => {
+        let store = chance.company();
+        socket.emit('start', store);
+    }, 10000);
+};
 
 function createPackage(newStore) {
     let order;
@@ -22,7 +32,7 @@ function createPackage(newStore) {
             address: chance.city() + ', ' + chance.state(),
         }
     }
-        events.emit('newOrder', order);
+        socket.emit('newOrder', order);
         return order;
 }
 
@@ -34,6 +44,7 @@ function packageDelivered(payload) {
 }
 
 module.exports = {
+    createANewStore,
     createPackage,
     packageDelivered,
 }

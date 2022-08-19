@@ -41,3 +41,6 @@ This will be an event driven application that “distributes” the responsibili
 ## UML Diagram
 
 ![UML](./src/assets/images/caps.PNG)
+
+Code Newbie S21:E2 What your bootcamp isn't teaching you with Caitlyn Greffly
+Caitlyn is a software engineer at the Motley Fool, and author of the The Bootcamper's Companion. She talks about how she didn't see herself as someone that could fit into the tech industry, how she found her love for data and analytics, transitioning careers and eventually writing the Bootcamper's Companion, which covers important tech topics that aren't typically covered at coding bootcamps
