@@ -1,26 +1,49 @@
 'use strict';
 
-// Main Hub Application
-const Chance = require('chance');
-const chance = Chance();
-// const events = require('./events.js');
+// Main Hub Application - this listening for all events
 
-const socketIo = require('socket.io');
-const  io = socketIo(3000);
-// const socket = io('ws://localhost:3000');
+const io = require('./events.js');
 
-const { createANewStore, createPackage, packageDelivered } = require('./vendor.js');
-const { pickUp, inTransit, delivered } = require('./driver.js');
+const { createPackage } = require('./vendor.js');
+// const { pickUp, inTransit, delivered } = require('./driver.js');
 
 function start() {
     io.on('connection', (client) => {
-        client.on('start', createPackage);
-        client.on('newOrder', pickUp);
-        client.on('pickUp', inTransit);
-        client.on('in-transit', delivered);
-        client.on('delivered', packageDelivered);
+        // client.on('start', (payload) => {
+        //     io.emit('new-store', createPackage(payload));
+        // });
+        client.on('new-package', (payload) => {
+            io.emit('new-package-for-delivery', payload);
+        });
+        client.on('driver-picked-up', (payload) => {
+            logEvents(payload, 'pickup');
+            io.emit('confirmation-pickUp', payload);
+        });
+        client.on('driver-in-transit', (payload) => {
+            logEvents(payload, 'in-transit');
+            io.emit('confirmation-in-transit', payload);
+        });
+        client.on('driver-delivered', (payload) => {
+            logEvents(payload, 'delivered');
+            io.emit('confirmation-delivery', payload);
+        });
     });
 };
 
+function logEvents(payload, str){
+    const date = Date.now();
+    const today = new Date(date).toUTCString();
+    console.log(`
+        EVENT: {\n
+            event: "${str}",\n
+            time: "${today}",\n
+            payload: {\n
+                store: "${payload.store}", \n
+                orderId: "${payload.orderId}", \n
+                customer: "${payload.customer}", \n
+                address: "${payload.address}", \n
+            },
+        }`);
+}
+
 start();
-createANewStore();
