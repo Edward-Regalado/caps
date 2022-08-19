@@ -1,39 +1,67 @@
 'use strict';
 
-const events = require('./events.js');
+const { io } = require('socket.io-client');
+const socket = io('ws://localhost:3000');
+
 const Chance = require('chance');
 const chance = Chance();
 
-function createPackage(newStore) {
-    let order;
+// function newStore(store){
+//         setInterval(() => {
+//             let store = chance.company();
+//             socket.emit('start', store);
+//         }, 10000);
+//     return store;
+// };
 
-    if(newStore === 'Test Store'){
-        order = {
-            store: 'Target',
-            orderId: 12345,
-            customer: 'John Smith',
-            address: 'Seattle, Washington',
-        }
-    } else {
-        order = {
-            store: newStore,
-            orderId: chance.string({length: 10}) + chance.string({length: 10}),
-            customer: chance.name(),
-            address: chance.city() + ', ' + chance.state(),
-        }
-    }
-        events.emit('newOrder', order);
-        return order;
+function createPackage() {
+        setInterval(() => {
+            let order;
+
+            order = {
+                store: chance.company(),
+                orderId: chance.string({length: 10}) + chance.string({length: 10}),
+                customer: chance.name(),
+                address: chance.city() + ', ' + chance.state(),
+            }
+           socket.emit('new-package', order);
+            // let order;
+    
+            // if(newStore === 'Test Store'){
+            //     order = {
+            //         store: 'Target',
+            //         orderId: 12345,
+            //         customer: 'John Smith',
+            //         address: 'Seattle, Washington',
+            //     }
+            // } else {
+            //     order = {
+            //         store: chance.company(),
+            //         orderId: chance.string({length: 10}) + chance.string({length: 10}),
+            //         customer: chance.name(),
+            //         address: chance.city() + ', ' + chance.state(),
+            //     }
+            //    socket.emit('new-package', order);
+            // }
+        }, 10000);
+        // return order;
 }
 
 function packageDelivered(payload) {
-    setTimeout(() => {
-        console.log(`Thank you, ${payload.customer}`);
-    }, 3000);
-    return `Thank you, ${payload.customer}`;
+    socket.on('confirmation-delivery', (payload) => {
+        setTimeout(() => {
+            console.log(`Thank you, ${payload.customer}`);
+        }, 3000);
+    });
+    // return `Thank you, ${payload.customer}`;
 }
 
-module.exports = {
-    createPackage,
-    packageDelivered,
-}
+// newStore();
+createPackage();
+packageDelivered();
+
+// module.exports = {
+//     newStore,
+//     createPackage,
+//     packageDelivered,
+// }
